@@ -1,0 +1,5 @@
+<div id="<%= dom_id post %>">
+  <h1><%= post.titre %></h1>
+  <h3>Posted by <%= post.user.email %> <%= time_ago_in_words(post.created_at) %> ago</h3>
+  <p><%= post.content %></p>
+</div>

@@ -3,12 +3,17 @@ Rails.application.routes.draw do
   post '/login' => 'sessions#create'
   delete '/logout' => 'sessions#destroy'
 
+  resources :authors
+  resources :users
+
+  get '/books/publish' => 'books#publish'
+  post '/books/publish' => 'books#publish_post'
+  resources :books
+
   resources :posts do
     # /posts/:id/comments <- post comment on a post
     resources :comments, only: [:create]
   end
-
-  resources :users
 
   # DELETE /comments/:id
   resources :comments, only: [:destroy]

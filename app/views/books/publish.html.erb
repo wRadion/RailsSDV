@@ -1,0 +1,69 @@
+<h1>Publish a book</h1>
+
+<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+<div>
+  <label for="title">Title</label>
+  <input type="text" id="title" name="title" />
+</div>
+
+<div>
+  <label for="published_at">Published at</label>
+  <input type="date" id="published_at" name="published_at" />
+</div>
+
+<h3>Authors</h3>
+
+<ul id="authors">
+</ul>
+
+<div>
+  <span>Firstname:</span>
+  <input id="firstname" type="text" />
+  <span>Lastname:</span>
+  <input id="lastname" type="text" />
+  <button onclick="addAuthor()">Add</button>
+</div>
+
+<div>
+  <input type="submit" onclick="publish()" />
+</div>
+
+<script>
+  const authors = [];
+
+  function addAuthor() {
+    const authorsUl = document.getElementById('authors');
+
+    const firstname = document.getElementById('firstname').value;
+    const lastname = document.getElementById('lastname').value;
+
+    authors.push({ firstname, lastname });
+
+    const authorItem = document.createElement('li');
+    authorItem.innerText = `${firstname} ${lastname}`;
+
+    authorsUl.appendChild(authorItem);
+  }
+
+  function publish() {
+    const authenticityToken = document.getElementById('authenticity_token').value;
+    const bookTitle = document.getElementById('title').value;
+    const bookPublishedAt = document.getElementById('published_at').value;
+
+    const body = {
+      authenticity_token: authenticityToken,
+      book: { title: bookTitle, published_at: bookPublishedAt },
+      authors
+    };
+
+    fetch('/books/publish', {
+      method: 'post',
+      headers: {
+        'X-CSRF-Token': authenticityToken,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+  }
+</script>

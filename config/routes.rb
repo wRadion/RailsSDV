@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # DELETE /comments/:id
   resources :comments, only: [:destroy]
 
-  scope '/comments/:parent_id' do
+  scope '/comments/:parent_id', as: 'comment' do
     resources :comments, only: [:create]
   end
 

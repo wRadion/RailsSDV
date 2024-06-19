@@ -1,0 +1,13 @@
+<li>
+    <%= comment.user.email %> commented: <%= comment.content %> (<%= time_ago_in_words(comment.created_at) %> ago)
+
+    <%= render 'comments/form', parent: comment, comment: Comment.new %>
+
+    <% if comment.replies.any? %>
+        <ul>
+            <% comment.replies.each do |reply| %>
+                <%= render reply %>
+            <% end %>
+        </ul>
+    <% end %>
+</li>

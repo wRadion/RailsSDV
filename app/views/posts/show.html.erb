@@ -13,32 +13,11 @@
 <% if @post.comments.any? %>
   <ul>
     <% @post.comments.each do |comment| %>
-      <li><%= comment.user.email %> commented: <%= comment.content %> (<%= time_ago_in_words(comment.created_at) %> ago)</li>
+      <%= render comment %>
     <% end %>
   </ul>
 <% else %>
   <p><em>This post has no comments yet.</em></p>
 <% end %>
 
-<%= form_with(model: @comment, url: [@post, @comment]) do |form| %>
-  <% if @comment.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
-
-      <ul>
-        <% @comment.errors.each do |error| %>
-          <li><%= @comment.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div>
-    <%= form.label :content, style: "display: block" %>
-    <%= form.text_area :content %>
-  </div>
-
-  <div>
-    <%= form.submit "Comment" %>
-  </div>
-<% end %>
+<%= render 'comments/form', post: @post, comment: @comment %>

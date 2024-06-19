@@ -1,7 +1,18 @@
 class CommentsController < ApplicationController
   def create
     @comment = Comment.new(comment_params)
-    @post = Post.find(params[:post_id])
+
+    if params[:post_id]
+      @post = Post.find(params[:post_id])
+    elsif params[:parent_id]
+      @parent = Comment.find(params[:parent_id])
+      @post = @parent.post
+      @comment.parent = @parent
+    else
+      respond_to do |format|
+        format.json { render json: { error: "Missing post or parent id" }, status: :bad_request }
+      end
+    end
 
     @comment.post = @post
     @comment.user = @current_user
